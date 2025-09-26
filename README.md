@@ -20,19 +20,13 @@
 
 **2.**克隆仓库到本地，并进入仓库目录
 
-**3.**在仓库目录空白处右击，选择在终端中打开
-
-![image-20250927015814385](C:\Users\Hilbert\AppData\Roaming\Typora\typora-user-images\image-20250927015814385.png)
-
-复制以下代码进入终端回车运行，安装必要依赖
+**3.**在仓库目录空白处右击，选择在终端中打开并复制以下代码进入终端回车运行，安装必要依赖
 
 ```python
 pip install -r requirements.txt
 ```
 
 **4.**打开手机模拟器启动游戏，并缩小窗口，以MUMU模拟器为例，一次点击...->键鼠/手柄，并将空格键绑定至游戏中“长按搭桥的位置”
-
-![image-20250927020502459](C:\Users\Hilbert\AppData\Roaming\Typora\typora-user-images\image-20250927020502459.png)
 
 **5.**在终端中输入以下命令运行程序，而后点击模拟器窗口的左上和右下点坐标，获得窗口位置
 
