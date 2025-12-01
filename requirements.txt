@@ -1,0 +1,6 @@
+ultralytics
+pyautogui
+numpy
+pydirectinput
+opencv-python
+pynput
