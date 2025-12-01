@@ -175,7 +175,7 @@ class Bridge:
                     elif choice == "n":
                         time.sleep(0.8)
                         self.fail_count = 0
-                        logging.info("你选择了：使用当前斜率释放木板")
+                        logging.info("你选择了：放弃本次结果，继续检测")
                         time.sleep(0.05)
                         continue
 
