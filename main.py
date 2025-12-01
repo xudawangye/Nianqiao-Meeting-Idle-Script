@@ -17,6 +17,14 @@ class Bridge:
 
     #获取距离
     def get_dis(self, show=True):
+        """
+        获取玩家与前方柱子的距离和信息
+        返回:
+            min_dist: 水平距离
+            nearest_pillar: 最近柱子的坐标和类别
+            human_center: 玩家中心坐标
+            pillar_class: 最近柱子的类别
+        """
         # 截屏
         img = pyautogui.screenshot(region=(1743, 535, 656, 307)) # 根据实际窗口的位置调整，可以使用项目中的get_game_area.py脚本获取游戏区域坐标
         img = np.array(img, dtype=np.uint8)
@@ -72,6 +80,35 @@ class Bridge:
 
 
     def auto_build(self):
+        """
+        自动建桥主循环方法
+        
+        功能:
+            - 捕捉游戏画面并使用 YOLO 模型检测玩家（陶陶）和柱子/经验包
+            - 根据检测到的前方柱子位置计算斜率
+            - 判断是否与预设斜率对齐
+            - 若对齐，模拟按空格键放置木板
+            - 若连续检测未对齐，允许用户手动介入进行强制放板，避免程序卡死
+
+        核心流程:
+            1. 调用 get_dis() 获取玩家与柱子/目标的距离、坐标和类别
+            2. 根据玩家和柱子位置计算斜率
+            3. 判断斜率是否符合目标斜率范围（aligned）
+            4. 如果 aligned 为 True:
+                - 重置 fail_count
+                - 根据距离计算按键持续时间 press_time
+                - 按空格放置木板
+            5. 如果 aligned 为 False:
+                - 增加 fail_count
+                - 当 fail_count 超过阈值（如 30）时：
+                    - 提示用户选择 y/n/q 强制放板、放弃或退出程序
+                    - 根据用户选择执行相应操作
+
+        注意:
+            - press_time 超过 1.85 秒将被跳过，防止异常操作
+            - 强制放板时，会延迟 0.8 秒以保证焦点在游戏画面
+            - logging 用于记录检测信息和操作日志，便于调试和监控
+        """
         pillar_count = 0
         slope_config = {
         1: [-0.330, 0.639],   # 柱子在前和右的两个方向的斜率
