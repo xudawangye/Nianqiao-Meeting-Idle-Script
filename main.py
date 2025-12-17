@@ -7,13 +7,17 @@ import cv2
 import logging
 import sys
 
+from pynput import mouse
+from get_game_area import get_game_area
+
 logging.basicConfig(level=logging.INFO, force=True)
-class Bridge:
+class Bridge():
     #初始化模型的路径、桥的速度、失败次数
-    def __init__(self):
+    def __init__(self, region):
         self.model = YOLO(r".\runs\detect\train\weights\best.pt") # 模型路径，请替换为你实际的路径
         self.speed = 120  # 桥伸长速度(像素/秒)
         self.fail_count = 0 #失败次数
+        self.region = region
 
     #获取距离
     def get_dis(self, show=True):
@@ -26,7 +30,7 @@ class Bridge:
             pillar_class: 最近柱子的类别
         """
         # 截屏
-        img = pyautogui.screenshot(region=(1743, 535, 656, 307)) # 根据实际窗口的位置调整，可以使用项目中的get_game_area.py脚本获取游戏区域坐标
+        img = pyautogui.screenshot(region=self.region) # 根据实际窗口的位置调整，可以使用项目中的get_game_area.py脚本获取游戏区域坐标
         img = np.array(img, dtype=np.uint8)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         img = np.ascontiguousarray(img)
@@ -220,5 +224,8 @@ class Bridge:
                         logging.info("无效输入，请输入 y/n/q")
 
 if __name__ == "__main__":
-    bridge_obj = Bridge()
+    
+    region = get_game_area()
+
+    bridge_obj = Bridge(region)
     bridge_obj.auto_build()
